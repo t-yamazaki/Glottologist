@@ -1,19 +1,20 @@
 const gulp = require("gulp");
+const babel = require('gulp-babel');
 const rigger = require("gulp-rigger");
 const rename = require("gulp-rename");
 const babili = require("gulp-babel-minify");
-gulp.task("copy", () => {
-    gulp
+const copy = () => {
+    return gulp
         .src("src/*.js")
         .pipe(rigger())
         .pipe(rename({
             basename: "glottologist"
         }))
         .pipe(gulp.dest("dist"));
-});
+};
 
-gulp.task("minify", () => {
-    gulp
+const minify = () => {
+    return gulp
         .src("src/*.js")
         .pipe(rigger())
         .pipe(babili({
@@ -23,17 +24,38 @@ gulp.task("minify", () => {
         }))
         .pipe(rename({
             basename: "glottologist",
-			suffix: ".min"
+            suffix: ".min"
         }))
         .pipe(gulp.dest("dist"));
-})
-gulp.task("test", () => {
-    gulp
+}
+
+const es5 = () => {
+    return gulp
+        .src("src/*.js")
+        .pipe(rigger())
+        .pipe(babel({presets: ['@babel/env']}))
+        .pipe(babili({
+            mangle: {
+                keepClassName: true
+            }
+        }))
+        .pipe(rename({
+            basename: "glottologist",
+            suffix: ".es5.min"
+        }))
+        .pipe(gulp.dest("dist"));
+};
+const test = () => {
+    return gulp
         .src("src/*.js")
         .pipe(rigger())
         .pipe(rename({
             basename: "glottologist"
         }))
         .pipe(gulp.dest("__test__"));
-});
-gulp.task("default", ["copy", "minify", "test"])
+};
+exports.copy = copy;
+exports.minify = minify;
+exports.es5 = es5;
+exports.test = test;
+exports.default = gulp.parallel(copy, minify, es5, test);

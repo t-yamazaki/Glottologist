@@ -2,7 +2,7 @@
   "name": "glottologist",
   "version": "1.0.10",
   "description": "An easy to use translator library",
-  "main": "dist/glottologist.min.js",
+  "main": "dist/glottologist.es5.min.js",
   "scripts": {
     "test": "npm run gulp && npm run eye",
     "gulp": "gulp",
@@ -26,10 +26,13 @@
   },
   "homepage": "https://github.com/arguiot/Glottologist#readme",
   "devDependencies": {
+    "@babel/preset-env": "^7.23.6",
     "eye.js": "^1.1.1",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
     "gulp-babel-minify": "^0.3.0",
     "gulp-rename": "^1.2.2",
     "gulp-rigger": "^0.5.8"
-  }
+  },
+  "presets": ["@babel/preset-env"]
 }
